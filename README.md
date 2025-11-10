@@ -137,6 +137,6 @@ dotnet test
 ## 👨‍💻 Autor
 
 **Sneider Londoño**  
-📌 Backend Developer – .NET / Node / React
+📌 Backend Developer
 
 ---
