@@ -1,0 +1,15 @@
+/home/sneiderlz16/Escritorio/project/productHub.Application/bin/Debug/net8.0/productHub.Application.deps.json
+/home/sneiderlz16/Escritorio/project/productHub.Application/bin/Debug/net8.0/productHub.Application.dll
+/home/sneiderlz16/Escritorio/project/productHub.Application/bin/Debug/net8.0/productHub.Application.pdb
+/home/sneiderlz16/Escritorio/project/productHub.Application/bin/Debug/net8.0/productHub.Domain.dll
+/home/sneiderlz16/Escritorio/project/productHub.Application/bin/Debug/net8.0/productHub.Domain.pdb
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.csproj.AssemblyReference.cache
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.AssemblyInfoInputs.cache
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.AssemblyInfo.cs
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.csproj.CoreCompileInputs.cache
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productH.51101996.Up2Date
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.dll
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/refint/productHub.Application.dll
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/productHub.Application.pdb
+/home/sneiderlz16/Escritorio/project/productHub.Application/obj/Debug/net8.0/ref/productHub.Application.dll

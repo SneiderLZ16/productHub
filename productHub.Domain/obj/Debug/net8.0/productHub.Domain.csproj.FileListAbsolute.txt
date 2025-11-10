@@ -1,0 +1,11 @@
+/home/sneiderlz16/Escritorio/project/productHub.Domain/bin/Debug/net8.0/productHub.Domain.deps.json
+/home/sneiderlz16/Escritorio/project/productHub.Domain/bin/Debug/net8.0/productHub.Domain.dll
+/home/sneiderlz16/Escritorio/project/productHub.Domain/bin/Debug/net8.0/productHub.Domain.pdb
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.AssemblyInfoInputs.cache
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.AssemblyInfo.cs
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.csproj.CoreCompileInputs.cache
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.dll
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/refint/productHub.Domain.dll
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/productHub.Domain.pdb
+/home/sneiderlz16/Escritorio/project/productHub.Domain/obj/Debug/net8.0/ref/productHub.Domain.dll

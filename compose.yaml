@@ -1,0 +1,35 @@
+﻿version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+     
+      dockerfile: Dockerfile
+      
+    environment:
+      # ASP.NET
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_ROLL_FORWARD: Major   # te permite correr net8 con runtime 9 si es el caso
+
+      # Connection String a Aiven (usa tu host/puerto/DB/usuario; la password la tomamos de .env)
+      ConnectionStrings__DefaultConnection: >-
+        server=simulacro-kelozu-d2a6.e.aivencloud.com;port=16919;
+        database=defaultdb;user=avnadmin;password=${AIVEN_DB_PASSWORD};sslmode=Required;
+
+      # JWT (key se toma del .env)
+      Jwt__Issuer: productHub
+      Jwt__Audience: productHubUsers
+      Jwt__Key: ${JWT_KEY}
+      Jwt__ExpiresMinutes: "120"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
