@@ -18,10 +18,18 @@ using productHub.Domain.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // ------------------------------------------------------
-// Controllers + Swagger
+// Kestrel: usar el puerto que Render asigna (PORT)
+// ------------------------------------------------------
+builder.WebHost.ConfigureKestrel(options =>
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    options.ListenAnyIP(int.Parse(port));
+});
+
+// ------------------------------------------------------
+// Controllers + Swagger (siempre habilitado)
 // ------------------------------------------------------
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -40,11 +48,7 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
         Description = "Insertar token en formato: Bearer {token}",
-        Reference = new OpenApiReference
-        {
-            Id = "Bearer",
-            Type = ReferenceType.SecurityScheme
-        }
+        Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme }
     };
 
     c.AddSecurityDefinition("Bearer", securityScheme);
@@ -55,11 +59,15 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // ------------------------------------------------------
-// Database (Aiven - MySQL con SSL REQUIRED)
+// Database (MySQL Aiven con SSL) - prioriza ENV VAR
 // ------------------------------------------------------
+// Render/Aiven: configura esto como env var:
+//   ConnectionStrings__DefaultConnection=server=...;port=...;database=...;user=...;password=...;sslmode=Required;
 var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection") ??
-    "server=simulacro-kelozu-d2a6.e.aivencloud.com;port=16919;database=defaultdb;user=avnadmin;password=;sslmode=Required;";
+    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string not configured. Set ConnectionStrings__DefaultConnection or DB_CONNECTION_STRING.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -81,11 +89,20 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 // ------------------------------------------------------
-// JWT Authentication
+// JWT Authentication (prioriza ENV VARS)
 // ------------------------------------------------------
-var jwtKey = builder.Configuration["Jwt:Key"]!;
-var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-var jwtAudience = builder.Configuration["Jwt:Audience"];
+var jwtKey =
+    Environment.GetEnvironmentVariable("JWT_SECRET")
+    ?? builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("JWT secret not configured. Set JWT_SECRET env var.");
+
+var jwtIssuer =
+    Environment.GetEnvironmentVariable("JWT_ISSUER")
+    ?? builder.Configuration["Jwt:Issuer"];
+
+var jwtAudience =
+    Environment.GetEnvironmentVariable("JWT_AUDIENCE")
+    ?? builder.Configuration["Jwt:Audience"];
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -94,13 +111,13 @@ builder.Services
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateIssuer = true,
-            ValidIssuer = jwtIssuer,
-            ValidateAudience = true,
-            ValidAudience = jwtAudience,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromSeconds(30)
+            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer           = !string.IsNullOrWhiteSpace(jwtIssuer),
+            ValidIssuer              = jwtIssuer,
+            ValidateAudience         = !string.IsNullOrWhiteSpace(jwtAudience),
+            ValidAudience            = jwtAudience,
+            ValidateLifetime         = true,
+            ClockSkew                = TimeSpan.FromSeconds(30)
         };
     });
 
@@ -111,12 +128,15 @@ var app = builder.Build();
 // ------------------------------------------------------
 // Pipeline
 // ------------------------------------------------------
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
